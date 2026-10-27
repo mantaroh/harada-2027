@@ -65,103 +65,198 @@
 
 ---
 
-# 2コマ目：AIと一緒にWebページを改善する（実習）
+---
 
-## 1. 今回の道具は2つだけ
+# 2コマ目：GitHub Codespaces と Copilot でWebページを改善する（実習）
 
-| サービス | 役割 | URL |
-|---|---|---|
-| **GitHub Copilot Free** | AIに質問してコードの提案を受ける（無料利用枠あり） | https://github.com/copilot |
-| **github.dev** | ブラウザで自分のリポジトリを編集・コミットする | https://github.dev |
+> **変更点（10月27日追記）：** github.devではCopilotが使えない場合があったため、実習は **GitHub Codespaces（ブラウザで動くVS Code）** を使用します。パソコンにVS Codeをインストールする必要はありません。
+>
+> **GitHubとの接続 → 安全なフォルダを信頼 → Copilotを有効化 → 質問・修正 → 差分確認 → コミット・プッシュ** の順で進めます。
 
-- VS Code本体などの**インストールは不要**です。
-- Copilotとgithub.devは別のタブで開いてかまいません。
-- 今日の方法では、AIにコードを提案してもらい、**自分で確認して貼り付け・編集**します。
-- **github.devにはターミナルやプログラム実行環境がありません。** 表示確認にはGitHub Pagesやローカルのブラウザを使います。
+## 準備するものと注意点
 
-## 2. 準備（目安5分）
+- 自分のGitHubアカウント（前回の授業で作成済み）
+- 前回の自己紹介ページを保存した**自分の**リポジトリ（参考：[前回の課題 #4](https://github.com/mantaroh/harada-2027/issues/4)）
+- Chrome / Edge 等のブラウザ。**VS Code本体のインストール不要**
+- GitHub Copilot Free または利用可能な学生向けCopilotプラン。**有料プランに申し込まない**
 
-1. https://github.com/copilot を開く。普段使っているGitHubアカウントでログインする。
-2. 利用できない場合は https://github.com/github-copilot/free_signup から無料枠の案内を確認する。**有料契約はしないでください。**
-3. 自分の前回の自己紹介WebページのGitHubリポジトリを開く。
-4. リポジトリ画面で **\`.\`（ピリオド）キー**を押す。反応しない場合はURL中の \`github.com\` を \`github.dev\` に置き換える。
-5. \`index.html\` や \`style.css\` が編集できることを確認する。
+**料金について：** 個人のGitHub FreeアカウントにはCodespacesの無料枠（120コア時間/月・15GB/月のストレージ）があり、2コアのマシンなら計算上約60時間の実行に相当します。使用量・契約形態で条件が異なり、無料枠を超える利用は課金設定によっては有料になります。授業では最小構成を選び、支払い画面が出たら先へ進まず先生に相談してください。
 
-参考：[前回の課題 #4](https://github.com/mantaroh/harada-2027/issues/4)
+## 手順1：自分のリポジトリからCodespaceを作成する
 
-## 3. 実習課題：前回の自己紹介ページを1か所改善する
+1. https://github.com に、**授業で登録した自分のアカウント**でログインします。
+2. 前回作った**自己紹介ページの自分のリポジトリ**を開きます。例：`https://github.com/ユーザー名/リポジトリ名`。
+3. 緑色（表示によっては別の色）の **Code** ボタンを押します。
+4. メニューの **Codespaces** タブを開きます（**Local / Codespaces** のうち Codespaces）。
+5. **Create codespace on main** / **Create codespace** を押します。ブランチ名が `main` 以外なら、現在の自分の通常の作業ブランチを確認します。
+6. マシンの選択がある場合は授業用の小さい構成を選びます。作成が終わると、ブラウザ内にVS Codeに似た編集画面が開きます。
 
-以下から好きなものを選んでください。
+**確認ポイント：** 左側のエクスプローラーに `index.html` などのファイルが表示され、自分のリポジトリ名が開いていること。
 
-- **初級：** 背景・文字色・余白・カードなどのデザインを改善
-- **中級：** ホバーやフェードインなどのCSSアニメーション
-- **発展：** JavaScriptを使ってボタンやダークモードを追加
+**重要：** `mantaroh/harada-2027` は課題を読むための授業用リポジトリです。**変更するのは自分が作成したリポジトリ**です。
 
-### AIに送る質問例
+## 手順2：GitHubとの連携・認証を確認する
 
-> 前回作成した自己紹介Webページを改善したいです。
-> 好きなものを紹介するカードをHTMLとCSSで追加してください。
-> スマートフォンでも読みやすいデザインにしてください。
-> 変更するファイル名と、変更した箇所を日本語で説明してください。
-> 私が自分で確認できる方法も教えてください。
+CodespacesをGitHub上の自分のリポジトリから起動した場合、通常はGitHubへの接続とリポジトリへのGit認証が設定されています。全員が毎回連携操作をするわけではありません。
 
-最初から全部作り直さず、**何を変えたいかを1つずつ**伝えましょう。
+追加の認証画面が出たら、次の順で確認してください。
 
-## 4. 変更・確認・保存
+1. 右下または左下の **Accounts（アカウント）**、画面上部の **Sign in to GitHub** などを探します。
+2. **Sign in with GitHub** を選択し、ブラウザの案内に従います。
+3. GitHubの確認画面が出たら、**自分のGitHubアカウントであること、許可を求めているアプリ名と権限**を確認します。
+4. 公式のVS Code/GitHub関連の認証で問題がなければ、**Authorize** / **Continue** を押します。
+5. VS Codeの画面に戻り、アカウントが認識されていることを確認します。
 
-1. AIが提案したコードを読む。どのファイルのどの部分を変えるか確認する。
-2. github.devで該当ファイルを編集する。
-3. GitHub Pagesで公開している場合は公開ページで表示を確認する。まだ公開していない場合はGitHubの **Code → Download ZIP** でリポジトリを取得し、展開した \`index.html\` をブラウザで開いて確認する（CSSなどの相対パスを保つ）。
-4. おかしい部分があれば、AIに**秘密情報を除いた**エラーや状況を渡して相談する。
-5. github.dev左側の**Source Control**から変更を確認し、コミットメッセージを書いて **Commit & Push** で保存する。
+**注意：** 学校・先生が送ったURLや見知らぬサイトでGitHubのパスワードや認証コードを入力するよう求められたら、一度先生に確認してください。GitHubの認証コードやトークンをチャットやIssueに貼らないこと。
 
-**注意：** github.devの未コミット変更はブラウザ内に一時的に保持されます。失わないよう、こまめにコミットしてください。
+## 手順3：「このフォルダを信頼する」と表示されたら
 
-## 完成条件
+フォルダを信頼すると、VS Codeの拡張機能やタスク、AIエージェントなどがそのフォルダで動けるようになります。**すべてのフォルダを無条件に信頼する操作ではありません。**
 
-- [ ] AIに質問した
-- [ ] 既存のHTML/CSSを1か所以上変更した
-- [ ] 変更が意図どおりか、何が変わったか自分で確認した
-- [ ] GitHubに変更を保存した
-- [ ] この授業Issueに、リポジトリURL・変更内容・AIに依頼したこと・困ったことをコメントした
+1. **Do you trust the authors of the files in this folder?** などと表示されたら、一度フォルダ名とリポジトリを確認します。
+2. **自分が作った自己紹介ページのリポジトリで、安全性を確認できる場合だけ**、**Yes, I trust the authors**（信頼する）を選びます。
+3. 他人の不明なリポジトリや怪しいファイルを開いている場合は**信頼しない**で先生に相談してください。
+4. 確認画面が**最初から出ないことも正常**です。Codespacesの環境によっては自動的に信頼されます。
+5. 「Restricted Mode」のままで機能が使えないときは、画面のバナーの **Manage** またはコマンドパレット（Windows: `Ctrl+Shift+P`）から **Workspaces: Manage Workspace Trust** を開いて状態を確認できます。
 
-余裕がある人は公開ページも更新してください。**GitHub Pagesは任意**です。
+## 手順4：GitHub Copilotを有効にする
+
+1. VS Code画面左側の **Extensions（拡張機能、四角形のアイコン）** を開きます。
+2. 検索欄に **GitHub Copilot** と入力します。
+3. 発行元が**GitHub**であることを確認し、未インストールなら **Install**、無効なら **Enable** を押します。チャット用拡張機能を別途求められた場合は画面の公式案内に従います。
+4. 画面の**Copilot / Chat** アイコン、または上部のチャットボタンを押します。
+5. **Sign in to GitHub / Sign in to use GitHub Copilot** が出たら、画面の指示に従ってGitHubアカウントと連携します。
+6. GitHubの認可画面では、自分のアカウントと求められる権限を確認してから **Authorize / Continue** を選びます。
+7. チャット欄に「こんにちは。日本語で答えてください」と入力し、応答が返るか確認します。
+
+初回に **Sign up for Copilot Free** が表示された場合は、無料プランの利用条件を確認して進めます。**支払い方法の登録・有料プランの契約は行いません。**
+
+### Copilotの画面が見つからないとき
+
+- 拡張機能がインストール・有効化されているか確認する
+- ウィンドウの再読み込みを試す（コマンドパレットから **Developer: Reload Window**）
+- GitHubアカウントを間違えていないか確認する
+- 利用上限やアカウント制限のメッセージを確認する
+
+## 手順5：Copilotに質問する
+
+まずは「コードを読んで説明する」質問から始めます。チャット欄に次のように入力してください。
+
+> 今開いている自己紹介ページの `index.html` と `style.css` の役割を教えてください。初心者向けに日本語で説明してください。まだファイルは変更しないでください。
+
+次に、小さな改善を依頼します。
+
+> 自己紹介ページに「好きなこと」をカード表示するデザインを追加したいです。現在のHTML/CSSを確認し、変更方針を先に説明してください。変更対象は `index.html` と `style.css` のみです。既存の内容は消さないでください。実装したら変更点と確認方法を教えてください。
+
+**モードの違い（表示名は変更される場合があります）：**
+- **Ask / Chat：** 質問や説明を聞く。AIから提案されたコードを自分で貼ることもできる。
+- **Edit / Agent：** 権限・設定に応じてAIがファイルを書き換えたり、コマンドを実行したりできる。初回は実行内容と権限を確認し、分からない操作は承認せず先生に相談する。
+
+**注意：** APIキー、パスワード、認証トークン、他人の個人情報は貼らないでください。AIが「正しい」と回答しても動作確認は必要です。
+
+## 手順6：AIが変更した内容を確認する
+
+**AIによる変更は「確認が終わる前に完成」ではありません。**
+
+1. AIが変更したファイルの一覧を確認します（チャット上の変更ファイル表示、または左側の **Source Control／ソース管理** の枝分かれアイコン）。
+2. 変更されたファイルをクリックすると**差分（diff）**が見られます。一般に、追加行は緑、削除行は赤で表示されます。
+3. **意図していない削除や、関係のないファイルの変更がないか**確認します。勝手に削除された自己紹介やリンクがないかも確認します。
+4. 実装が意図と違う場合はCopilotに修正を頼むか、変更を元に戻します。UIに **Keep / Undo** が表示される場合は変更単位で採用・取り消しできます。表示されない場合はSource Controlの差分から確認してください。
+5. 最後にAIへ「今回変更したファイルと、各変更の理由を説明してください」と聞いてみます。
+
+**学生自身が言えるようになること：** 「どこを変更したか」「何が変わったか」「なぜそうしたか」。
+
+## 手順7：ブラウザで動作を確認する
+
+Codespacesにはターミナルがあるので、静的なHTML/CSSページを簡単に確認できます。
+
+1. Codespaces画面上部の **Terminal → New Terminal** でターミナルを開きます。
+2. `index.html` のあるディレクトリで、以下を入力します。
+
+```bash
+python3 -m http.server 8000
+```
+
+3. 画面下部の **PORTS（ポート）** タブ、または右下の「Open in Browser」等の通知から、**8000番ポートの転送URL**を開きます。
+4. ページが表示されたら、文字・色・リンク・カードなどが意図どおりか確認してください。変更した後はブラウザを更新します。
+5. プレビューを終えたら、ターミナルで `Ctrl+C` を押してサーバーを停止します。
+
+**注意：** 自分のPCのブラウザで単に `http://localhost:8000` を開いても、Codespaces側のサーバーに接続できない場合があります。**PORTSに表示される転送URL**を使ってください。ポートの公開設定は**Private（非公開）**のままにしてください。
+
+Pythonが利用できない場合や起動方法が分からない場合は、無理に追加インストールせず先生に相談してください。GitHub Pages公開済みなら、コミット後の公開ページでも確認できます。
+
+## 手順8：変更をコミット・プッシュする
+
+1. 左側の **Source Control（ソース管理）** アイコンを押します。
+2. **Changes（変更）** に表示されたファイルをクリックし、変更内容をもう一度確認します。
+3. 保存するファイルの右側にある **＋（Stage Changes）** を押します。すべて保存する場合は「Changes」の横の＋を選ぶこともできますが、知らないファイルが混ざっていないか確認してください。
+4. コミットメッセージの欄に変更内容を短く書きます。例：`AIと自己紹介ページのデザインを改善`
+5. **Commit** ボタンの隣の ▼ メニューから **Commit & Push**（コミットしてプッシュ）を選びます。
+6. **Commit** しか選べない／先にコミットした場合は、続けて **Sync Changes** または **… → Push** を実行します。
+7. GitHubの自分のリポジトリを別タブで再読み込みし、**最新のコミットと変更後のファイル**が表示されていることを確認します。
+
+**覚えておこう：** ファイルを編集しただけではGitHub側に変更は反映されません。**コミット → プッシュ → GitHubの画面で確認**の3つがセットです。
+
+## 手順9：授業が終わったらCodespaceを停止する
+
+1. https://github.com/codespaces を開きます。
+2. 今使ったCodespaceの右側の **…** メニューから **Stop codespace** を押します。
+3. **ブラウザのタブを閉じるだけではCodespaceがすぐ停止しない場合があります。**
+4. 後日再開したいときは同じページから開けます。停止中も保存ストレージは無料枠の対象として計算されるので、不要になったCodespaceは、必要な変更がGitHubにプッシュされていることを確認してから削除できます。
 
 ---
 
-# トラブルシューティング（困ったとき）
+## 今日の完成条件
 
-| 症状 | 確認すること・対応 |
+- [ ] 自分のリポジトリでCodespaceを開いた
+- [ ] 必要な場合にGitHub認証・ワークスペースの信頼を確認した
+- [ ] Copilotで質問できた
+- [ ] HTML/CSSを1か所以上改善した
+- [ ] AIが変更した差分を自分で見た
+- [ ] ブラウザで結果を確認した
+- [ ] **Commit & Push** でGitHubに反映した
+- [ ] [授業Issue #5](https://github.com/mantaroh/harada-2027/issues/5) に成果をコメントした
+- [ ] Codespaceを停止した
+
+**Issueにコメントすること：** 自分のリポジトリURL、AIに頼んだこと、変更内容、動作確認の結果、困ったこと（あれば）。GitHub Pagesの公開は任意です。
+
+---
+
+# トラブルシューティング（Codespaces / Copilot）
+
+| 困ったこと | 確認・対応 |
 |---|---|
-| **Copilotが開けない／使えない** | GitHubへ正しいアカウントでログインしているか確認。 https://github.com/github-copilot/free_signup で無料プランを確認。利用資格・学校アカウントの制限がある場合は先生へ相談。**課金しない**。 |
-| **有料プランの画面しか出ない** | 購入せずに止め、先生へ画面を見せる。AIを使えない場合も、既存のHTML/CSSの編集で授業を継続できます。 |
-| **Copilotの利用制限が表示される** | Freeの利用枠は有限。復旧まで待つか、別の許可された無料チャットで質問し、コードは自分でgithub.devへ反映します。 |
-| **\`.\`を押してもgithub.devが開かない** | GitHubにログインし、リポジトリのURL中の \`github.com\` を \`github.dev\` に変更。キーボード配列によりショートカットが使えない場合があります。 |
-| **github.devが真っ白／読み込まない** | 最新のChromeやEdge等で試す。広告ブロッカーを一時的に無効化、プライベートブラウズでない通常ウィンドウを試す。 |
-| **編集できない／保存できない** | 自分のリポジトリを開いているか、ログイン済みか確認。クラス共通のリポジトリには通常書き込めません。Source Controlでコミット状態・エラーメッセージを確認。 |
-| **保存したのにGitHubに反映されない** | 編集しただけで終わっていないか確認。Source Controlでステージ・コミットし、\`Commit & Push\` したか確認。 |
-| **CSSが効かない** | \`index.html\` に \`<link rel="stylesheet" href="style.css">\` があるか、ファイル名・大文字小文字・パスが一致しているか確認。ブラウザで再読み込み。 |
-| **ページを開くと404** | リポジトリ名、公開URL、\`index.html\` の場所、GitHub Pagesの設定を確認。設定反映まで時間差がある場合は少し経って再確認。 |
-| **公開ページが古い** | 変更のコミット・プッシュ、Pagesの公開ブランチ・フォルダ設定、ブラウザのキャッシュを確認。 |
-| **AIのコードで表示が壊れた** | 変更点を小さく分け、直前の状態との差分を確認。秘密情報を削除したうえでAIに症状を説明。 |
-| **パスワードやAPIキーを誤って送信／公開した** | その情報の使用を停止し、キーを無効化・再発行、パスワードを変更し、速やかに先生へ連絡する。チャットやコミットの削除だけで安全になったと判断しない。 |
+| **Codespacesのタブが表示されない／Createできない** | 自分のリポジトリを開いているか確認。自分の個人アカウントでログインしているか、アカウントの利用制限や利用枠を確認。 |
+| **請求先・クレジットカード・有料プランの案内が表示された** | **支払わず先生に相談**。無料枠の残量や所有者を確認する。 |
+| **Codespaceの作成に時間がかかる** | 少し待ってから https://github.com/codespaces の一覧を確認。繰り返し新規作成しない。 |
+| **GitHub認証が求められる** | 自分のアカウント、認証先のURL、権限を確認してから許可。コードやトークンをIssueに書かない。 |
+| **Restricted Mode／Trustの確認が出る** | 自分で作ったリポジトリなら内容を確認して信頼。知らないリポジトリは信頼せず相談。自動で信頼されている場合は操作不要。 |
+| **Copilotが見つからない** | Extensionsで発行元GitHubの「GitHub Copilot」を検索しInstall/Enable。必要ならウィンドウを再読み込みする。 |
+| **Copilotがサインインを要求する** | Chat／AccountsからGitHub連携。表示される認証先・アカウントを確認して許可。 |
+| **Copilot Freeの利用回数に達した** | 同じ質問を何度も繰り返さず、先生に相談。AIへの質問を一時中断しても、Codespaces内での編集・コミットはできます。 |
+| **AIに変更を頼んでもファイルが変わらない** | Askモードは説明中心。ファイルを編集するモードや実行許可の有無を確認。初心者は提案コードを自分で貼る方法でもOK。 |
+| **AIが違うファイルまで修正した** | Source Controlの変更差分で確認し、不要な変更をUndo／元に戻す。AIが提案した内容をそのまま全部承認しない。 |
+| **画面にページが表示されない** | ターミナルで `python3 -m http.server 8000` が実行中か確認し、**PORTS** の8000番の転送URLを開く。ローカルPCのlocalhostではない。 |
+| **404 / index.htmlが表示されない** | サーバーを実行した場所と `index.html` の場所が一致するか確認。別フォルダなら先にそのフォルダへ移動する。 |
+| **CSSが変わらない** | HTMLの `<link rel="stylesheet" href="style.css">` と実際のファイル名・場所を確認。ブラウザを再読み込み。 |
+| **変更をコミットできない** | Source Controlでファイルをステージしたか、コミットメッセージを書いたか確認。 |
+| **コミットしたのにGitHubに反映されない** | Commitだけではないか確認。Push / Sync Changesが必要。GitHubで正しいリポジトリ・ブランチを開いているか確認。 |
+| **ブラウザを閉じたのにCodespaceが動いている** | https://github.com/codespaces から Stop codespace。実行中は無料枠を消費する。 |
+| **秘密情報をAIに送った／GitHubに公開した** | パスワードやキーを速やかに変更・無効化し、先生に連絡。履歴削除だけで安全とは判断しない。 |
 
-## 先生への相談方法
+## 先生への相談のしかた
 
-このIssueに次の情報をコメントしてください。パスワード、APIキー、他人の個人情報は書かないでください。
-
-1. 自分のGitHubリポジトリURL
-2. どの画面・どの操作で困ったか
-3. 表示されたエラーメッセージ（秘密や個人情報を除いたもの）
-4. 何を試したか
-5. どんな状態になってほしいか
+[授業Issue #5](https://github.com/mantaroh/harada-2027/issues/5) に「どの手順番号で止まったか」「見えたエラー（秘密情報を除く）」「試したこと」をコメントしてください。
 
 ## 公式参考資料
 
-- [GitHub Copilotのプラン](https://docs.github.com/ja/copilot/get-started/plans)
-- [Copilot Freeの始め方](https://docs.github.com/en/copilot/how-tos/manage-your-account/get-started-with-a-copilot-plan)
-- [GitHub EducationとCopilot Student](https://docs.github.com/ja/copilot/how-tos/copilot-on-github/set-up-copilot/enable-copilot/set-up-for-students)
-- [github.devの使い方・制限・保存手順](https://docs.github.com/en/codespaces/the-githubdev-web-based-editor)
-- [Copilotの一般的なトラブルシューティング](https://docs.github.com/ja/copilot/how-tos/troubleshoot-copilot/troubleshoot-common-issues)
+- [GitHub Codespacesの作成](https://docs.github.com/en/codespaces/developing-in-a-codespace/creating-a-codespace-for-a-repository)
+- [CodespacesでGitHub Copilotを使う](https://docs.github.com/ja/codespaces/reference/using-github-copilot-in-github-codespaces)
+- [Copilot Freeの開始方法](https://docs.github.com/en/copilot/how-tos/manage-your-account/get-started-with-a-copilot-plan)
+- [VS CodeのWorkspace Trust](https://code.visualstudio.com/docs/editing/workspaces/workspace-trust)
+- [Codespacesでコミット・プッシュ](https://docs.github.com/ja/codespaces/developing-in-a-codespace/using-source-control-in-your-codespace?tool=webui)
+- [Codespacesでポート転送](https://docs.github.com/en/codespaces/developing-in-a-codespace/forwarding-ports-in-your-codespace)
+- [Codespacesを停止する](https://docs.github.com/ja/codespaces/developing-in-a-codespace/stopping-and-starting-a-codespace)
+- [無料枠・利用量](https://docs.github.com/ja/billing/reference/product-usage-included)
 
-**授業のまとめ：** AIの利用自体は評価を下げません。何を渡すか、何を変更したか、正しく動くかを自分で判断できるようになりましょう。
+**授業のまとめ：** AI利用は自由です。ただし、アクセス権限と情報の扱いを確認し、AIの変更を自分で見て、動作確認してからGitHubに保存しましょう。
